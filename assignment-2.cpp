@@ -9,6 +9,7 @@
 #include<string>
 #include<vector>
 #include<sstream>
+#include<cmath>
 
 std::ifstream course_marks{"course_marks.dat"}; // Open and attatch data from course_marks.dat to course_marks (read only)
 
@@ -24,6 +25,21 @@ double mean(const std::vector<double>& mark, int record_count) { // Pass in the 
     double mu{sum_xi / record_count}; // Formula provided
 
     return mu;
+  }
+
+// Create function to calculate standard deviation 
+
+double sd(const std::vector<double>& mark, int record_count, double mean) {
+
+    double sxx{0};
+
+    for (int index{0}; index < mark.size(); index++) {
+        sxx += (mark[index] - mean) * (mark[index] - mean);
+    }
+
+    double sd{std::sqrt(sxx / (record_count - 1))}; // Formula provided
+
+    return sd;
   }
 
 int main() {
