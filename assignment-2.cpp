@@ -28,6 +28,8 @@ int main() {
     // Read the data from the file
 
     std::string line; // Declare string to hold a single line from the file 
+
+    int record_count{0}; // Declare integer to count the number of records in the file
     
     while (std::getline(course_marks, line)) {
 
@@ -56,6 +58,9 @@ int main() {
             code.push_back(line_code);
             name.push_back(line_name); 
 
+            // Increment the count for the number of records by one
+            record_count ++;
+
         }
 
         else {
@@ -64,6 +69,8 @@ int main() {
         }
 
     }
+
+    std::cout << "Number of data entries (records): " << record_count << std::endl;
 
     return 0;
 }
