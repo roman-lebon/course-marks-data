@@ -28,7 +28,6 @@ double mean(const std::vector<double>& mark, int record_count) { // Pass in the 
   }
 
 // Create function to calculate standard deviation 
-
 double sd(const std::vector<double>& mark, int record_count, double mean) {
 
     double sxx{0};
@@ -40,6 +39,14 @@ double sd(const std::vector<double>& mark, int record_count, double mean) {
     double sd{std::sqrt(sxx / (record_count - 1))}; // Formula provided
 
     return sd;
+  }
+
+// Create function to calculate standard error
+double se(double sd, int record_count) {
+
+    double se{sd/(std::sqrt(record_count))}; // Formula provided
+
+    return se;
   }
 
 int main() {
