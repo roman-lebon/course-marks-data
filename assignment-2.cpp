@@ -12,6 +12,20 @@
 
 std::ifstream course_marks{"course_marks.dat"}; // Open and attatch data from course_marks.dat to course_marks (read only)
 
+// Create function to calculate mean
+double mean(const std::vector<double>& mark, int record_count) { // Pass in the mark vector (& insures it uses the original and doesn't make a new copy) as a constant, so it cannot be altered
+
+    double sum_xi{0};
+
+    for (int index{0}; index < mark.size(); index++) { // Loops until all vector entries have been visited, increments index after each visit
+        sum_xi += mark[index]; // Adds individual mark to rolling sum
+    }
+
+    double mu{sum_xi / record_count}; // Formula provided
+
+    return mu;
+  }
+
 int main() {
 
     // Check that the file is successfully opened 
