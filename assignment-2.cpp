@@ -25,12 +25,11 @@ int main() {
     std::vector<std::string> code; // String vector for the course code 
     std::vector<std::string> name; // String vector for the course name
 
-    // Read the data from the file
-
     std::string line; // Declare string to hold a single line from the file 
 
     int record_count{0}; // Declare integer to count the number of records in the file
-    
+
+    // Read and store file data to the above defined vectors
     while (std::getline(course_marks, line)) {
 
         std::stringstream ss(line); // Create a stream from the line so we can extract and seperate the different data
@@ -70,7 +69,14 @@ int main() {
 
     }
 
-    std::cout << "Number of data entries (records): " << record_count << std::endl;
+    std::cout << "Number of data entries (records): " << record_count << std::endl; // Output the number of records to the user 
+
+    // Traverse and print all elements of the mark vector (by index)
+    std::cout << "Full list of student marks:" << std::endl;
+
+    for (int index{0}; index < mark.size(); index++) { // Loops until all vector entries have been visited, increments index after each visit
+        std::cout << mark[index] << std::endl; // Outputs each mark entry to the user
+    }
 
     return 0;
 }
