@@ -107,10 +107,10 @@ int main() {
     }
 
     // Traverse and print all elements of the mark vector (by index)
-    std::cout << "\nFull list of student marks:" << std::endl;
+    std::cout << "\nFull list of student marks:" << "\n";
 
     for (int index{0}; index < mark.size(); index++) { // Loops until all vector entries have been visited, increments index after each visit
-        std::cout << mark[index] << std::endl; // Outputs each mark entry to the user
+        std::cout << mark[index] << " |" << name[index] << "\n"; // Outputs each mark entry to the user
     }
 
     std::cout << "Number of data entries (records): " << record_count << "\n"; // Output the number of records to the user 
@@ -133,7 +133,7 @@ int main() {
 
     for (int index{0}; index < mark.size(); index++) {
         if (year[index] == chosen_year) {
-            std::cout << mark[index] << "\n"; // Outputs course codes from chosen year only
+            std::cout << mark[index] << " |" << name[index] << "\n"; // Outputs course codes from chosen year only
         }
     }
 
