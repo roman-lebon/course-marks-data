@@ -66,7 +66,7 @@ int main() {
 
     int record_count{0}; // Declare integer to count the number of records in the file
 
-    // Read and store file data to the above defined vectors
+    // Read and store file data to the above defined vectori have a s
     while (std::getline(course_marks, line)) {
 
         std::stringstream ss(line); // Create a stream from the line so we can extract and seperate the different data
@@ -121,6 +121,7 @@ int main() {
     std::cin >> chosen_year; // Declare variable to store user input for chosen year 
 
     std::vector<int> year; // Integer vector for the first number of the course code
+    std::vector<double> year_mark; // Integer (double) vector for the marks for a specific year
     
     // Fill the year vector with the number first character of the course code 
     for (int index{0}; index < code.size(); index++) { 
@@ -132,8 +133,26 @@ int main() {
 
     for (int index{0}; index < mark.size(); index++) {
         if (year[index] == chosen_year) {
-            std::cout << mark[index] << std::endl; // Outputs course codes from chosen year only
+            std::cout << mark[index] << "\n"; // Outputs course codes from chosen year only
         }
     }
+
+    // Fill the year_mark vector with the marks for that year
+    for (int index{0}; index < mark.size(); index++) {
+        if (year[index] == chosen_year) {
+            year_mark.push_back(mark[index]);
+        }
+    }
+
+    double year_mean{mean(year_mark, record_count)}; // Declare and define the year mean using mean function
+    double year_sd{sd(year_mark, record_count, year_mean)}; // Declare and define the year standard deviation using sd function
+    double year_se{se(year_sd, record_count)}; // Declare and define the year standard error using se function
+
+    // Output the summary statistics for the given year
+    std::cout << "\nSummary statistics for Year " << chosen_year << ":\n";
+    std::cout << "Mean: " << year_mean << "\n";
+    std::cout << "Standard deviation: " << year_sd << "\n";
+    std::cout << "Standard error: " << year_se << "\n";
+
     return 0;
 }
