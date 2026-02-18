@@ -10,6 +10,7 @@
 #include<vector>
 #include<sstream>
 #include<cmath>
+#include<iomanip>
 
 std::ifstream course_marks{"course_marks.dat"}; // Open and attatch data from course_marks.dat to course_marks (read only)
 
@@ -50,6 +51,8 @@ double se(double sd, int record_count) {
   }
 
 int main() {
+
+    std::cout << std::fixed << std::setprecision(1); // Ensures floating-point numbers are printed to console with 1dp for conistent output of marks
 
     // Check that the file is successfully opened 
     if (!course_marks.is_open()) {
@@ -147,6 +150,8 @@ int main() {
     double year_mean{mean(year_mark, record_count)}; // Declare and define the year mean using mean function
     double year_sd{sd(year_mark, record_count, year_mean)}; // Declare and define the year standard deviation using sd function
     double year_se{se(year_sd, record_count)}; // Declare and define the year standard error using se function
+
+    std::cout << std::fixed << std::setprecision(5); // Ensures floating-point numbers are printed to console with 5dp for conistent output of summary statistics
 
     // Output the summary statistics for the given year
     std::cout << "\nSummary statistics for Year " << chosen_year << ":\n";
