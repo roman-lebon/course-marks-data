@@ -53,7 +53,7 @@ int main() {
 
     // Check that the file is successfully opened 
     if (!course_marks.is_open()) {
-        std::cerr << "Error: The file could not be opened." << std::endl; // Use error output to tell user the file can't be opened
+        std::cerr << "Error: The file could not be opened.\n"; // Use error output to tell user the file can't be opened
         return 1;
     }
 
@@ -100,20 +100,40 @@ int main() {
         }
 
         else {
-            std::cerr << "Error: The data from the file could not be read." << std::endl; // Use error output to tell user the data can't be read
+            std::cerr << "Error: The data from the file could not be read.\n"; // Use error output to tell user the data can't be read
             return 1;
         }
 
     }
 
-    std::cout << "Number of data entries (records): " << record_count << std::endl; // Output the number of records to the user 
-
     // Traverse and print all elements of the mark vector (by index)
-    std::cout << "Full list of student marks:" << std::endl;
+    std::cout << "\nFull list of student marks:" << std::endl;
 
     for (int index{0}; index < mark.size(); index++) { // Loops until all vector entries have been visited, increments index after each visit
         std::cout << mark[index] << std::endl; // Outputs each mark entry to the user
     }
 
+    std::cout << "Number of data entries (records): " << record_count << "\n"; // Output the number of records to the user 
+
+    std::cout << "\nPlease select a year for which you wish to view the student marks. Enter a number (1-4): "; // Ask user to select a year to output marks for
+
+    int chosen_year;
+    std::cin >> chosen_year; // Declare variable to store user input for chosen year 
+
+    std::vector<int> year; // Integer vector for the first number of the course code
+    
+    // Fill the year vector with the number first character of the course code 
+    for (int index{0}; index < code.size(); index++) { 
+        year.push_back(code[index][0] - '0'); // Subtract character zero because string characters stored as their ASCII values
+    }
+
+    // Traverse and print all elements of the mark for the chosen year
+    std::cout << "\nFull list of student marks for Year " << chosen_year << ":\n";
+
+    for (int index{0}; index < mark.size(); index++) {
+        if (year[index] == chosen_year) {
+            std::cout << mark[index] << std::endl; // Outputs course codes from chosen year only
+        }
+    }
     return 0;
 }
