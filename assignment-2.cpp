@@ -13,7 +13,7 @@
 std::ifstream course_marks{"course_marks.dat"}; // Open and attatch data from course_marks.dat to course_marks (read only)
 
 // Create function to calculate mean
-double mean(const std::vector<double>& mark, int record_count) { // Pass in the mark vector (& insures it uses the original and doesn't make a new copy) as a constant, so it cannot be altered
+double mean(const std::vector<double>& mark, int count) { // Pass in the mark vector (& insures it uses the original and doesn't make a new copy) as a constant, so it cannot be altered
 
     double sum_xi{0};
 
@@ -21,13 +21,13 @@ double mean(const std::vector<double>& mark, int record_count) { // Pass in the 
         sum_xi += mark[index]; // Adds individual mark to rolling sum
     }
 
-    double mu{sum_xi / record_count};
+    double mu{sum_xi / count};
 
     return mu;
   }
 
 // Create function to calculate standard deviation 
-double sd(const std::vector<double>& mark, int record_count, double mean) {
+double sd(const std::vector<double>& mark, int count, double mean) {
 
     double sxx{0};
 
@@ -35,15 +35,15 @@ double sd(const std::vector<double>& mark, int record_count, double mean) {
         sxx += (mark[index] - mean) * (mark[index] - mean);
     }
 
-    double sd{std::sqrt(sxx / (record_count - 1))};
+    double sd{std::sqrt(sxx / (count - 1))};
 
     return sd;
   }
 
 // Create function to calculate standard error
-double se(double sd, int record_count) {
+double se(double sd, int count) {
 
-    double se{sd/(std::sqrt(record_count))};
+    double se{sd/(std::sqrt(count))};
 
     return se;
   }
@@ -58,9 +58,10 @@ int main() {
         return 1;
     }
 
-    std::vector<double> mark; // Integer (decimal) vector for the student's mark
-    std::vector<std::string> code; // String vector for the course code 
-    std::vector<std::string> name; // String vector for the course name
+    // Declare variables to store the student's mark, course code and course name data from the file 
+    std::vector<double> mark; 
+    std::vector<std::string> code; 
+    std::vector<std::string> name; 
 
     std::string line; // Declare string to hold a single line from the file 
 
@@ -116,10 +117,12 @@ int main() {
     int chosen_year;
     std::cin >> chosen_year; // Declare variable to store user input for chosen year 
 
-    std::vector<int> year; // Integer vector for the first number of the course code
-    std::vector<double> year_mark; // Integer (double) vector for the marks for a specific year
+    // Declare variables to store the year (first number of the course code) and the marks and course count for a specific year
+    std::vector<int> year; 
+    std::vector<double> year_mark;
+    int year_count{0};
     
-    // Fill the year vector with the number first character of the course code 
+    // Store values in the year vector 
     for (int index{0}; index < code.size(); index++) { 
         year.push_back(code[index][0] - '0'); // Subtract character zero because string characters stored as their ASCII values
     }
@@ -130,19 +133,17 @@ int main() {
     for (int index{0}; index < mark.size(); index++) {
         if (year[index] == chosen_year) {
             std::cout << mark[index] << " |" << name[index] << "\n"; // Outputs course codes from chosen year only
+            year_mark.push_back(mark[index]); // Store values in the year_mark vector 
+            year_count++; // Use this loop to find the course_count
         }
     }
 
-    // Fill the year_mark vector with the marks for that year
-    for (int index{0}; index < mark.size(); index++) {
-        if (year[index] == chosen_year) {
-            year_mark.push_back(mark[index]);
-        }
-    }
-
-    double year_mean{mean(year_mark, record_count)}; // Declare and define the year mean using mean function
-    double year_sd{sd(year_mark, record_count, year_mean)}; // Declare and define the year standard deviation using sd function
-    double year_se{se(year_sd, record_count)}; // Declare and define the year standard error using se function
+    std::cout << "DEBUG: Year count = " << year_count << "\n";
+    
+    // Declare and define the year-specific summary statistics using the mean, standard deviation and standard error functions at the start of the program
+    double year_mean{mean(year_mark, year_count)}; 
+    double year_sd{sd(year_mark, year_count, year_mean)}; 
+    double year_se{se(year_sd, year_count)}; 
 
     std::cout << std::fixed << std::setprecision(5); // Ensures floating-point numbers are printed to console with 5dp for conistent output of summary statistics
 
