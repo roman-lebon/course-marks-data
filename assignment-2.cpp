@@ -9,6 +9,7 @@
 #include<sstream>
 #include<cmath>
 #include<iomanip>
+#include<algorithm>
 
 std::ifstream course_marks{"course_marks.dat"}; // Open and attatch data from course_marks.dat to course_marks (read only)
 
@@ -117,7 +118,13 @@ int main() {
     int chosen_year;
     std::cin >> chosen_year; // Declare variable to store user input for chosen year 
 
-    // Declare variables to store the year (first number of the course code) and the marks and course count for a specific year
+    std::cout << "Please select if you wish to view the courses in (alphabetical) order. Enter either character (y/n): "; // Ask user if they want to sort output by course name
+
+    char order_courses;
+    std::cin >> order_courses; // Declare variable to store user input for whether to order courses
+
+    // Declare variables to store the year (first number of the course code) and the index of a data entry, as well as the marks and course count for a specific year
+    std::vector<int> indices;
     std::vector<int> year; 
     std::vector<double> year_mark;
     int year_count{0};
@@ -127,19 +134,35 @@ int main() {
         year.push_back(code[index][0] - '0'); // Subtract character zero because string characters stored as their ASCII values
     }
 
-    // Traverse and print all elements of the mark for the chosen year
-    std::cout << "\nFull list of student marks for Year " << chosen_year << ":\n";
-
-    for (int index{0}; index < mark.size(); index++) {
+    // Store index of each relevant course to indicies vector
+    for (int index{0}; index < mark.size(); index++ ) {
         if (year[index] == chosen_year) {
-            std::cout << mark[index] << " |" << name[index] << "\n"; // Outputs course codes from chosen year only
-            year_mark.push_back(mark[index]); // Store values in the year_mark vector 
-            year_count++; // Use this loop to find the course_count
+            indices.push_back(index);
         }
     }
 
-    std::cout << "DEBUG: Year count = " << year_count << "\n";
-    
+    // Sort indicies by course name if required by the user
+    if (order_courses == 'y') {
+        for (int i{0}; i < indices.size(); i++) {
+            for (int j{i+1}; j < indices.size(); j++) {
+
+                // Swap course names if the next (jth) course is 'less' (ASCII order) than the current (ith) course
+                if (name[indices[j]] < name[indices[i]]) { // Case-sensitive alphabetical order (capitalisation differences in course names affects ordering)
+                    std::swap(indices[i], indices[j]); 
+                }
+            }
+        }
+    }
+
+    // Traverse and print all elements of the mark for the chosen year (sorted or unsorted)
+    std::cout << "\nFull list of student marks for Year " << chosen_year << ":\n";
+
+    for (int index{0}; index < indices.size(); index++) {
+            std::cout << mark[indices[index]] << " |" << name[indices[index]] << "\n"; // Outputs course codes from chosen year only
+            year_mark.push_back(mark[indices[index]]); // Store values in the year_mark vector 
+            year_count++; // Use this loop to find the course_count
+        }
+
     // Declare and define the year-specific summary statistics using the mean, standard deviation and standard error functions at the start of the program
     double year_mean{mean(year_mark, year_count)}; 
     double year_sd{sd(year_mark, year_count, year_mean)}; 
