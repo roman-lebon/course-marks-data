@@ -2,8 +2,6 @@
 // PHYS30762 Assignment 2 - Course Marks Data
 // Roman le Bon - 11423027
 
-// Include libraries needed for program to work
-
 #include<iostream>
 #include<fstream>
 #include<string>
@@ -23,7 +21,7 @@ double mean(const std::vector<double>& mark, int record_count) { // Pass in the 
         sum_xi += mark[index]; // Adds individual mark to rolling sum
     }
 
-    double mu{sum_xi / record_count}; // Formula provided
+    double mu{sum_xi / record_count};
 
     return mu;
   }
@@ -37,7 +35,7 @@ double sd(const std::vector<double>& mark, int record_count, double mean) {
         sxx += (mark[index] - mean) * (mark[index] - mean);
     }
 
-    double sd{std::sqrt(sxx / (record_count - 1))}; // Formula provided
+    double sd{std::sqrt(sxx / (record_count - 1))};
 
     return sd;
   }
@@ -45,7 +43,7 @@ double sd(const std::vector<double>& mark, int record_count, double mean) {
 // Create function to calculate standard error
 double se(double sd, int record_count) {
 
-    double se{sd/(std::sqrt(record_count))}; // Formula provided
+    double se{sd/(std::sqrt(record_count))};
 
     return se;
   }
@@ -54,22 +52,21 @@ int main() {
 
     std::cout << std::fixed << std::setprecision(1); // Ensures floating-point numbers are printed to console with 1dp for conistent output of marks
 
-    // Check that the file is successfully opened 
+    // Check that the file is successfully opened, inform user if not 
     if (!course_marks.is_open()) {
-        std::cerr << "Error: The file could not be opened.\n"; // Use error output to tell user the file can't be opened
+        std::cerr << "Error: The file could not be opened.\n";
         return 1;
     }
 
-    // Declare vectors to store the data read from the file 
     std::vector<double> mark; // Integer (decimal) vector for the student's mark
     std::vector<std::string> code; // String vector for the course code 
     std::vector<std::string> name; // String vector for the course name
 
     std::string line; // Declare string to hold a single line from the file 
 
-    int record_count{0}; // Declare integer to count the number of records in the file
+    int record_count{0};
 
-    // Read and store file data to the above defined vectori have a s
+    // Read and store file data to the above defined vectors
     while (std::getline(course_marks, line)) {
 
         std::stringstream ss(line); // Create a stream from the line so we can extract and seperate the different data
@@ -80,11 +77,9 @@ int main() {
         std::string line_name; 
 
         // Extract the data if formatted correctly 
-
         if (ss >> line_mark >> line_code) { 
 
-            // If mark and course code is successfully extracted we must handle the extraction of the course name differently 
-            // Extracting normally would only retrieve the first word of the course name
+            // Extracting course names is handled differently - handling them as above would only retrieve the first word
             std::getline(ss, line_name); // Extracts the rest of the string stream (including spaces)
 
             // If there is a valid name, containing an intial whitespace, we remove erase the first character (the space)
@@ -92,18 +87,16 @@ int main() {
                 line_name.erase(0,1);
             }
 
-            // Store extracted values to relevant vectors
             mark.push_back(line_mark);
             code.push_back(line_code);
             name.push_back(line_name); 
 
-            // Increment the count for the number of records by one
             record_count ++;
 
         }
 
         else {
-            std::cerr << "Error: The data from the file could not be read.\n"; // Use error output to tell user the data can't be read
+            std::cerr << "Error: The data from the file could not be read.\n"; 
             return 1;
         }
 
@@ -112,7 +105,7 @@ int main() {
     // Traverse and print all elements of the mark vector (by index)
     std::cout << "\nFull list of student marks:" << "\n";
 
-    for (int index{0}; index < mark.size(); index++) { // Loops until all vector entries have been visited, increments index after each visit
+    for (int index{0}; index < mark.size(); index++) {
         std::cout << mark[index] << " |" << name[index] << "\n"; // Outputs each mark entry to the user
     }
 
@@ -161,3 +154,4 @@ int main() {
 
     return 0;
 }
+ 
