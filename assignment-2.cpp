@@ -104,6 +104,12 @@ int main() {
 
     }
 
+    // Check file is non-empty
+    if (record_count == 0) {
+        std::cerr << "Error: The file contains no valid data.\n";
+        return 1;
+    }
+
     // Traverse and print all elements of the mark vector (by index)
     std::cout << "\nFull list of student marks:" << "\n";
 
@@ -113,10 +119,33 @@ int main() {
 
     std::cout << "Number of data entries (records): " << record_count << "\n"; // Output the number of records to the user 
 
-    std::cout << "\nPlease select a year for which you wish to view the student marks. Enter a number (1-4): "; // Ask user to select a year to output marks for
-
     int chosen_year;
-    std::cin >> chosen_year; // Declare variable to store user input for chosen year 
+    bool valid_year = false;
+
+    while (!valid_year) {
+
+        std::cout << "\nPlease select a year for which you wish to view the student marks. Enter a number (1-4): "; // Ask user to select a year to output marks for
+
+        std::string input;
+        std::getline(std::cin, input);
+
+        std::stringstream ss(input);
+
+        // Ensure integer conversion is possible and that the number is between 1 and 4
+        if (!(ss >> chosen_year) || chosen_year < 1 || chosen_year > 4) {
+            std::cout << "Invalid input. Enter a number between 1 and 4.\n";
+            continue;
+        }
+
+        // Check for extra invalid  after the number
+        std::string extra;
+        if (ss >> extra) {
+            std::cout << "Invalid input. Enter only one number.\n";
+            continue;
+        }
+
+        valid_year = true;
+    }
 
     std::cout << "Please select if you wish to view the courses in (alphabetical) order. Enter either character (y/n): "; // Ask user if they want to sort output by course name
 
