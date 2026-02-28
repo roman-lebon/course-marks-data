@@ -55,7 +55,7 @@ int main() {
 
     // Check that the file is successfully opened, inform user if not 
     if (!course_marks.is_open()) {
-        std::cerr << "Error: The file could not be opened.\n";
+        std::cerr << "* Error: The file could not be opened.\n";
         return 1;
     }
 
@@ -98,7 +98,7 @@ int main() {
         }
 
         else {
-            std::cerr << "Error: The data from the file could not be read.\n"; 
+            std::cerr << "* Error: The data from the file could not be read.\n"; 
             return 1;
         }
 
@@ -106,7 +106,7 @@ int main() {
 
     // Check file is non-empty
     if (record_count == 0) {
-        std::cerr << "Error: The file contains no valid data.\n";
+        std::cerr << "* Error: The file contains no valid data.\n";
         return 1;
     }
 
@@ -119,6 +119,7 @@ int main() {
 
     std::cout << "Number of data entries (records): " << record_count << "\n"; // Output the number of records to the user 
 
+    // Input validation for user input of the year to output marks for
     int chosen_year;
     bool valid_year = false;
 
@@ -133,24 +134,48 @@ int main() {
 
         // Ensure integer conversion is possible and that the number is between 1 and 4
         if (!(ss >> chosen_year) || chosen_year < 1 || chosen_year > 4) {
-            std::cout << "Invalid input. Enter a number between 1 and 4.\n";
+            std::cout << "\n-> Invalid input. Enter a number between 1 and 4.\n";
             continue;
         }
 
-        // Check for extra invalid  after the number
+        // Check for extra invalid input after the number
         std::string extra;
         if (ss >> extra) {
-            std::cout << "Invalid input. Enter only one number.\n";
+            std::cout << "\n-> Invalid input. Enter only one number.\n";
             continue;
         }
 
         valid_year = true;
     }
 
-    std::cout << "Please select if you wish to view the courses in (alphabetical) order. Enter either character (y/n): "; // Ask user if they want to sort output by course name
-
+    // Input validation for user input of whether to order courses alphabetically or not 
     char order_courses;
-    std::cin >> order_courses; // Declare variable to store user input for whether to order courses
+    bool valid_order = false;
+
+    while (!valid_order) {
+
+        std::cout << "\nPlease select if you wish to view the courses in (alphabetical) order. Enter either character (y/n): "; // Ask user if they want to sort output by course name
+
+        std::string input;
+        std::getline(std::cin, input);
+
+        std::stringstream ss(input);
+
+        // Ensure character conversion and that the character is either y or n
+        if (!(ss >> order_courses) || (order_courses != 'y' && order_courses != 'n')) {
+            std::cout << "\n-> Invalid input. Enter only 'y' or 'n'.\n";
+            continue;
+        }
+
+        // Check for extra invalid input after the character
+        std::string extra;
+        if (ss >> extra) {
+            std::cout << "\n-> Invalid input. Enter only one character.\n";
+            continue;
+        }
+
+        valid_order = true;
+    }
 
     // Declare variables to store the year (first number of the course code) and the index of a data entry, as well as the marks and course count for a specific year
     std::vector<int> indices;
