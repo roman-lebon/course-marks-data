@@ -39,7 +39,7 @@ double sd(const std::vector<double>& mark, int count, double mean) {
     double sd{std::sqrt(sxx / (count - 1))};
 
     return sd;
-  }
+}
 
 // Create function to calculate standard error
 double se(double sd, int count) {
@@ -47,7 +47,7 @@ double se(double sd, int count) {
     double se{sd/(std::sqrt(count))};
 
     return se;
-  }
+}
 
 int main() {
 
@@ -55,7 +55,7 @@ int main() {
 
     // Check that the file is successfully opened, inform user if not 
     if (!course_marks.is_open()) {
-        std::cerr << "* Error: The file could not be opened.\n";
+        std::cerr << "\n* Error: The file could not be opened.";
         return 1;
     }
 
@@ -98,7 +98,7 @@ int main() {
         }
 
         else {
-            std::cerr << "* Error: The data from the file could not be read.\n"; 
+            std::cerr << "\n* Error: The data from the file could not be read."; 
             return 1;
         }
 
@@ -106,7 +106,7 @@ int main() {
 
     // Check file is non-empty
     if (record_count == 0) {
-        std::cerr << "* Error: The file contains no valid data.\n";
+        std::cerr << "\n* Error: The file contains no valid data.";
         return 1;
     }
 
@@ -188,14 +188,20 @@ int main() {
         year.push_back(code[index][0] - '0'); // Subtract character zero because string characters stored as their ASCII values
     }
 
-    // Store index of each relevant course to indicies vector
+    // Store index of each relevant course to indices vector
     for (int index{0}; index < mark.size(); index++ ) {
         if (year[index] == chosen_year) {
             indices.push_back(index);
         }
     }
 
-    // Sort indicies by course name if required by the user
+    // Check that there are actually courses for the chosen year
+    if (indices.empty()) {
+            std::cerr << "\n* Error: No courses found for Year " << chosen_year << ".\n";
+            return 1;
+    }
+
+    // Sort indices by course name if required by the user
     if (order_courses == 'y') {
         for (int i{0}; i < indices.size(); i++) {
             for (int j{i+1}; j < indices.size(); j++) {
@@ -215,7 +221,12 @@ int main() {
             std::cout << mark[indices[index]] << " |" << name[indices[index]] << "\n"; // Outputs course codes from chosen year only
             year_mark.push_back(mark[indices[index]]); // Store values in the year_mark vector 
             year_count++; // Use this loop to find the course_count
-        }
+    }
+
+    if (year_count < 2) {
+        std::cerr << "\n* Error: Not enough data to calculate standard deviation.\n";
+        return 1;
+    }
 
     // Declare and define the year-specific summary statistics using the mean, standard deviation and standard error functions at the start of the program
     double year_mean{mean(year_mark, year_count)}; 
