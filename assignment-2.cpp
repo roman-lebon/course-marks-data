@@ -1,6 +1,4 @@
-// assignment-2.cpp
-// PHYS30762 Assignment 2 - Course Marks Data
-// Roman le Bon - 11423027
+// Course Marks Data
 
 #include<iostream>
 #include<fstream>
