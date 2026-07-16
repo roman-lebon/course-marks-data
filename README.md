@@ -1,4 +1,4 @@
-# PHYS30762 – Assignment 2
+# Course Marks Data
 
 ## Highlights
 
